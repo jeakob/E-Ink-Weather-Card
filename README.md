@@ -7,7 +7,7 @@ E-Ink Weather Card
 </p>
 
 
-> A Home Assistant weather card optimised for e-ink displays, based on [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card). Features configurable font sizes, e-ink colour modes, daily summaries, and full translation support.
+A Home Assistant weather card optimised for e-ink displays, based on [mlamberts78/weather-chart-card](https://github.com/mlamberts78/weather-chart-card). Features configurable font sizes, e-ink colour modes, daily summaries, and full translation support.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/jeakob/E-Ink-Weather-Card?style=flat-square)](https://github.com/jeakob/E-Ink-Weather-Card/releases/latest)
