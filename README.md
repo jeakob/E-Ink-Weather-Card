@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="docs/eink-dashboard-logo-no-bg.png" alt="E-Ink Weather Card" style="width:300px;" />
+  <img src="https://raw.githubusercontent.com/jeakob/E-Ink-Weather-Card/master/docs/eink-dashboard-logo-no-bg.png" alt="E-Ink Weather Card" style="width:300px;" />
 </h1>
 
 <h1 align="center">
@@ -10,7 +10,9 @@ E-Ink Weather Card
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/jeakob/E-Ink-Weather-Card?style=flat-square)](https://github.com/jeakob/E-Ink-Weather-Card/releases/latest)
 
-![eink-weather-card](docs/eink-weather-card.jpg)
+![eink-weather-card](https://raw.githubusercontent.com/jeakob/E-Ink-Weather-Card/master/docs/eink-weather-card.jpg)
+
+![eink-dashboard-screenshot-2](https://raw.githubusercontent.com/jeakob/E-Ink-Weather-Card/master/docs/eink-dashboard-screenshot-2.png)
 
 ## Installation
 
