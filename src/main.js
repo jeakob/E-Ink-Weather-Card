@@ -1296,7 +1296,8 @@ updateChart({ forecasts, forecastChart } = this) {
           font-weight: 500;
         }
         .attributes {
-          font-weight: 400 !important;
+          font-weight: 600 !important;
+          color: black !important;
         }
         .attributes ha-icon, .main ha-icon, .daily-summary-item ha-icon, .wind-detail ha-icon {
           color: black !important;
@@ -1340,7 +1341,8 @@ updateChart({ forecasts, forecastChart } = this) {
           font-weight: 500;
         }
         .attributes {
-          font-weight: 400 !important;
+          font-weight: 600 !important;
+          color: black !important;
         }
         .attributes ha-icon, .main ha-icon, .daily-summary-item ha-icon, .wind-detail ha-icon {
           color: #222 !important;
