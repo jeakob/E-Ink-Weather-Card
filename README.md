@@ -1,4 +1,6 @@
-# E-Ink Weather Card
+<h1 align="center">
+E-Ink Weather Card
+</h1>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/jeakob/E-Ink-Weather-Card/master/docs/eink-dashboard-logo-no-bg.png" alt="E-Ink Weather Card" width="300">
