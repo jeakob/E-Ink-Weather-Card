@@ -623,7 +623,7 @@ drawChart({ config, language, weather, forecastItems } = this) {
 
   const chartCanvas = this.renderRoot && this.renderRoot.querySelector('#forecastChart');
   if (!chartCanvas) {
-    console.error('Canvas element not found:', this.renderRoot);
+    console.debug('Canvas element not found:', this.renderRoot);
     return;
   }
 
