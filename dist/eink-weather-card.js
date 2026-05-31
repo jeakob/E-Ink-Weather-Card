@@ -1473,6 +1473,10 @@ class EinkWeatherCardEditor extends s {
           gap: 16px;
           margin-bottom: 12px;
         }
+        .sizes-grid ha-textfield {
+          display: block;
+          width: 100%;
+        }
         .select-wrapper {
           display: flex;
           flex-direction: column;
