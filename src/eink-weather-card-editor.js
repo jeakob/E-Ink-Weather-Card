@@ -721,12 +721,21 @@ class EinkWeatherCardEditor extends LitElement {
               .value="${this._config.custom_text_sensor || ''}"
               @change="${(e) => this._valueChanged(e, 'custom_text_sensor')}"
             ></ha-textfield>
-            ${this._config.custom_text_sensor ? html`
-              <ha-textfield
-                label="Attribute to display (leave blank to use state — only shown when state is 'on')"
-                .value="${this._config.custom_text_sensor_attribute || ''}"
-                @change="${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}"
-              ></ha-textfield>
+            ${this._config.custom_text_sensor && this.hass && this.hass.states[this._config.custom_text_sensor] ? html`
+              <div class="select-wrapper">
+                <label>Attribute to display (leave blank to use state value)</label>
+                <select
+                  class="native-select"
+                  @change=${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}
+                >
+                  <option value="" ?selected=${!this._config.custom_text_sensor_attribute}>— use state value —</option>
+                  ${Object.keys(this.hass.states[this._config.custom_text_sensor].attributes)
+                    .sort()
+                    .map((attr) => html`
+                      <option value=${attr} ?selected=${this._config.custom_text_sensor_attribute === attr}>${attr}</option>
+                    `)}
+                </select>
+              </div>
             ` : ''}
           </div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
