@@ -18602,7 +18602,7 @@ setConfig(config) {
 
 set hass(hass) {
   this._hass = hass;
-  this.language = this.config.locale || hass.selectedLanguage || hass.language;
+  this.language = this.config.locale || hass.language;
   this.sun = 'sun.sun' in hass.states ? hass.states['sun.sun'] : null;
   this.unitSpeed = this.config.units.speed ? this.config.units.speed : this.weather && this.weather.attributes.wind_speed_unit;
   this.unitPressure = this.config.units.pressure ? this.config.units.pressure : this.weather && this.weather.attributes.pressure_unit;
@@ -18739,6 +18739,13 @@ measureCard() {
   const numberOfForecasts = this.config.forecast.number_of_forecasts || 0;
 
   if (!card) {
+    return;
+  }
+
+  // Retry if the card hasn't been laid out yet (e.g. Puppeteer screenshot timing,
+  // hidden panels, or subscription callback arriving before first paint).
+  if (card.offsetWidth === 0) {
+    requestAnimationFrame(() => this.measureCard());
     return;
   }
 
@@ -19451,7 +19458,7 @@ updateChart({ forecasts, forecastChart } = this) {
     return x`
       <style>
         ha-icon {
-          color: var(--paper-item-icon-color);
+          color: var(--state-icon-color, var(--paper-item-icon-color));
         }
         img {
           width: ${config.icons_size}px;
