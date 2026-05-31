@@ -1327,7 +1327,11 @@ updateChart({ forecasts, forecastChart } = this) {
         }
         .main img, .conditions .forecast-item img, .daily-summary-item img,
         .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
-          filter: drop-shadow(0 0 2px rgba(0,0,0,0.85));
+          filter:
+            drop-shadow(3px 0 0 black) drop-shadow(-3px 0 0 black)
+            drop-shadow(0 3px 0 black) drop-shadow(0 -3px 0 black)
+            drop-shadow(2px 2px 0 black) drop-shadow(-2px -2px 0 black)
+            drop-shadow(2px -2px 0 black) drop-shadow(-2px 2px 0 black);
         }
         ` : ''}
         ${config.eink_color_mode ? `
@@ -1377,7 +1381,11 @@ updateChart({ forecasts, forecastChart } = this) {
         }
         .main img, .conditions .forecast-item img, .daily-summary-item img,
         .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
-          filter: drop-shadow(0 0 1.5px rgba(0,0,0,0.65));
+          filter:
+            drop-shadow(3px 0 0 black) drop-shadow(-3px 0 0 black)
+            drop-shadow(0 3px 0 black) drop-shadow(0 -3px 0 black)
+            drop-shadow(2px 2px 0 black) drop-shadow(-2px -2px 0 black)
+            drop-shadow(2px -2px 0 black) drop-shadow(-2px 2px 0 black);
         }
         ` : ''}
       </style>
