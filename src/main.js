@@ -421,27 +421,15 @@ ll(str) {
     if (coverage === null || coverage === undefined || !Number.isFinite(coverage)) {
       return null;
     }
-    if (condition !== 'cloudy' && condition !== 'partlycloudy') {
+    // Coverage shading only applies to 'cloudy'. For 'partlycloudy' the
+    // CDN partlycloudy-day/night icons show sun and moon far more clearly
+    // than the tiny celestial elements in the inline SVG, so we let those
+    // fall through to the normal icon path instead.
+    if (condition !== 'cloudy') {
       return null;
     }
     const { fill, stroke, strokeWidth, label } = this.getCloudCoverageShade(coverage);
     const cloudPath = 'M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z';
-    if (condition === 'partlycloudy') {
-      const celestial = isNight
-        ? html`<path d="M29.33 26.68a10.61 10.61 0 01-10.68-10.54A10.5 10.5 0 0119 13.5a10.54 10.54 0 1011.5 13.11 11.48 11.48 0 01-1.17.07z" fill="#cfe4ef" stroke="#72b9d5" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.6"></path>`
-        : html`
-          <g transform="translate(-5 -7)">
-            <circle cx="19" cy="24" r="6.5" fill="#fbbf24" stroke="#f8af18" stroke-width="0.5"></circle>
-            <path fill="none" stroke="#fbbf24" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2.2" d="M19 14V10.5m0 27v-3.5m6.72-15.72l2.47-2.47M9.81 33.19l2.47-2.47m0-13.44l-2.47-2.47m18.38 18.38l-2.47-2.47M6.5 24h3.5m18 0h3.5"></path>
-          </g>
-        `;
-      return html`
-        <svg class="cloud-coverage-icon" data-shade="${label}" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cloud coverage ${Math.round(coverage)}%">
-          ${celestial}
-          <path d="${cloudPath}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-miterlimit="10"></path>
-        </svg>
-      `;
-    }
     return html`
       <svg class="cloud-coverage-icon" data-shade="${label}" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cloud coverage ${Math.round(coverage)}%">
         <path d="${cloudPath}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-miterlimit="10"></path>
