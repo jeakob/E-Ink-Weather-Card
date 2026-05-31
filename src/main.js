@@ -27,7 +27,7 @@ static getStubConfig(hass, unusedEntities, allEntities) {
     entity = allEntities.find((eid) => eid.split(".")[0] === "weather");
   }
   return {
-    entity,
+    entity: entity || 'weather.home',
     show_main: true,
     show_temperature: true,
     show_current_condition: true,
