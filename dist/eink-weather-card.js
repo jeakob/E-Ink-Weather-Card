@@ -19720,13 +19720,10 @@ updateChart({ forecasts, forecastChart } = this) {
         .current-time {
           font-weight: 600;
         }
-        .main img, .conditions .forecast-item img, .daily-summary-item img,
-        .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
-          filter:
-            drop-shadow(3px 0 0 black) drop-shadow(-3px 0 0 black)
-            drop-shadow(0 3px 0 black) drop-shadow(0 -3px 0 black)
-            drop-shadow(2px 2px 0 black) drop-shadow(-2px -2px 0 black)
-            drop-shadow(2px -2px 0 black) drop-shadow(-2px 2px 0 black);
+        .main img, .main ha-icon, .main .cloud-coverage-icon,
+        .conditions .forecast-item img, .conditions .forecast-item ha-icon, .conditions .forecast-item .cloud-coverage-icon,
+        .daily-summary-item img, .daily-summary-item ha-icon, .daily-summary-item .cloud-coverage-icon {
+          filter: drop-shadow(0 0 3px rgba(0,0,0,0.9));
         }
         ` : ''}
         ${config.eink_color_mode ? `
@@ -19774,13 +19771,10 @@ updateChart({ forecasts, forecastChart } = this) {
           color: black !important;
           font-weight: 500;
         }
-        .main img, .conditions .forecast-item img, .daily-summary-item img,
-        .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
-          filter:
-            drop-shadow(3px 0 0 black) drop-shadow(-3px 0 0 black)
-            drop-shadow(0 3px 0 black) drop-shadow(0 -3px 0 black)
-            drop-shadow(2px 2px 0 black) drop-shadow(-2px -2px 0 black)
-            drop-shadow(2px -2px 0 black) drop-shadow(-2px 2px 0 black);
+        .main img, .main ha-icon, .main .cloud-coverage-icon,
+        .conditions .forecast-item img, .conditions .forecast-item ha-icon, .conditions .forecast-item .cloud-coverage-icon,
+        .daily-summary-item img, .daily-summary-item ha-icon, .daily-summary-item .cloud-coverage-icon {
+          filter: drop-shadow(0 0 3px rgba(0,0,0,0.9));
         }
         ` : ''}
       </style>
