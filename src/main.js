@@ -193,7 +193,7 @@ setConfig(config) {
   }
 
   if (cardConfig.icon_style === 'inkypi') {
-    this.baseIconPath = 'https://cdn.jsdelivr.net/gh/fatihak/InkyPi@main/src/plugins/weather/icons/';
+    this.baseIconPath = 'https://cdn.jsdelivr.net/gh/jeakob/E-Ink-Weather-Card@master/dist/icons-inkypi/';
     this.iconExtension = '.png';
     this.iconMapDay = weatherIconsInkyPiDay;
     this.iconMapNight = weatherIconsInkyPiNight;
@@ -432,6 +432,8 @@ ll(str) {
   }
 
   renderCloudCoverageIcon(condition, coverage, isNight = false) {
+    // InkyPi provides its own cloud icons; skip inline SVG entirely.
+    if (this.config.icon_style === 'inkypi') return null;
     if (coverage === null || coverage === undefined || !Number.isFinite(coverage)) {
       return null;
     }
