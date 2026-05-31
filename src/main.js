@@ -1325,6 +1325,10 @@ updateChart({ forecasts, forecastChart } = this) {
         .current-time {
           font-weight: 600;
         }
+        .main img, .conditions .forecast-item img, .daily-summary-item img,
+        .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
+          filter: drop-shadow(0 0 2px rgba(0,0,0,0.85));
+        }
         ` : ''}
         ${config.eink_color_mode ? `
         ha-card {
@@ -1370,6 +1374,10 @@ updateChart({ forecasts, forecastChart } = this) {
         .custom-text-sensor {
           color: black !important;
           font-weight: 500;
+        }
+        .main img, .conditions .forecast-item img, .daily-summary-item img,
+        .main ha-icon, .conditions .forecast-item ha-icon, .daily-summary-item ha-icon {
+          filter: drop-shadow(0 0 1.5px rgba(0,0,0,0.65));
         }
         ` : ''}
       </style>
