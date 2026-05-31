@@ -641,6 +641,15 @@ class EinkWeatherCardEditor extends LitElement {
                 ></ha-radio>
                 <label class="check-label">Style 2</label>
               </div>
+              <div class="switch-right">
+                <ha-radio
+                  name="icon_style"
+                  value="inkypi"
+                  @change="${this._handleIconStyleChange}"
+                  .checked="${this._config.icon_style === 'inkypi'}"
+                ></ha-radio>
+                <label class="check-label">InkyPi</label>
+              </div>
             </div>
           ` : ''}
        <div class="textfield-container">

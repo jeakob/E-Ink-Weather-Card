@@ -4,6 +4,8 @@ import {
   weatherIcons,
   weatherIconsDay,
   weatherIconsNight,
+  weatherIconsInkyPiDay,
+  weatherIconsInkyPiNight,
   WeatherEntityFeature
 } from './const.js';
 import {LitElement, html} from 'lit';
@@ -190,13 +192,25 @@ setConfig(config) {
     }
   }
 
-  if (cardConfig.eink_color_mode) {
+  if (cardConfig.icon_style === 'inkypi') {
+    this.baseIconPath = 'https://cdn.jsdelivr.net/gh/fatihak/InkyPi@main/src/plugins/weather/icons/';
+    this.iconExtension = '.png';
+    this.iconMapDay = weatherIconsInkyPiDay;
+    this.iconMapNight = weatherIconsInkyPiNight;
+    cardConfig.animated_icons = true;
+  } else if (cardConfig.eink_color_mode) {
     this.baseIconPath = 'https://cdn.jsdelivr.net/gh/jeakob/E-Ink-Weather-Card@master/dist/icons-eink-color/';
-    cardConfig.animated_icons = true; // force image-based icons for eink color
+    this.iconExtension = '.svg';
+    this.iconMapDay = weatherIconsDay;
+    this.iconMapNight = weatherIconsNight;
+    cardConfig.animated_icons = true;
   } else {
     this.baseIconPath = cardConfig.icon_style === 'style2' ?
       'https://cdn.jsdelivr.net/gh/jeakob/E-Ink-Weather-Card@master/dist/icons2/':
-      'https://cdn.jsdelivr.net/gh/jeakob/E-Ink-Weather-Card@master/dist/icons/' ;
+      'https://cdn.jsdelivr.net/gh/jeakob/E-Ink-Weather-Card@master/dist/icons/';
+    this.iconExtension = '.svg';
+    this.iconMapDay = weatherIconsDay;
+    this.iconMapNight = weatherIconsNight;
   }
 
   this.config = cardConfig;
@@ -382,11 +396,11 @@ ll(str) {
 
   getWeatherIcon(condition, sun) {
     if (this.config.animated_icons === true) {
-      const iconName = sun === 'below_horizon' ? weatherIconsNight[condition] : weatherIconsDay[condition];
-      return `${this.baseIconPath}${iconName}.svg`;
+      const iconName = sun === 'below_horizon' ? this.iconMapNight[condition] : this.iconMapDay[condition];
+      return `${this.baseIconPath}${iconName}${this.iconExtension}`;
     } else if (this.config.icons) {
-      const iconName = sun === 'below_horizon' ? weatherIconsNight[condition] : weatherIconsDay[condition];
-      return `${this.config.icons}${iconName}.svg`;
+      const iconName = sun === 'below_horizon' ? this.iconMapNight[condition] : this.iconMapDay[condition];
+      return `${this.config.icons}${iconName}${this.iconExtension}`;
     }
     return weatherIcons[condition];
   }
@@ -1686,7 +1700,7 @@ renderForecastConditionIcons({ config, forecastItems, sun } = this) {
           isDayTime = forecastTime >= approxSunrise && forecastTime <= approxSunset;
         }
 
-        const weatherIcons = isDayTime ? weatherIconsDay : weatherIconsNight;
+        const iconMap = isDayTime ? this.iconMapDay : this.iconMapNight;
         const condition = item.condition;
 
         let iconHtml;
@@ -1697,8 +1711,8 @@ renderForecastConditionIcons({ config, forecastItems, sun } = this) {
           iconHtml = coverageIcon;
         } else if (config.animated_icons || config.icons) {
           const iconSrc = config.animated_icons ?
-            `${this.baseIconPath}${weatherIcons[condition]}.svg` :
-            `${this.config.icons}${weatherIcons[condition]}.svg`;
+            `${this.baseIconPath}${iconMap[condition]}${this.iconExtension}` :
+            `${this.config.icons}${iconMap[condition]}${this.iconExtension}`;
           iconHtml = html`<img class="icon" src="${iconSrc}" alt="">`;
         } else {
           iconHtml = html`<ha-icon icon="${this.getWeatherIcon(condition, sun.state)}"></ha-icon>`;
@@ -1819,10 +1833,9 @@ renderDailySummary({ config, sun } = this) {
     if (summaryCoverageIcon) {
       iconHtml = summaryCoverageIcon;
     } else if (config.animated_icons || config.icons) {
-      const icons = weatherIconsDay;
       const iconSrc = config.animated_icons ?
-        `${this.baseIconPath}${icons[condition]}.svg` :
-        `${this.config.icons}${icons[condition]}.svg`;
+        `${this.baseIconPath}${this.iconMapDay[condition]}${this.iconExtension}` :
+        `${this.config.icons}${this.iconMapDay[condition]}${this.iconExtension}`;
       iconHtml = html`<img src="${iconSrc}" alt="">`;
     } else {
       iconHtml = html`<ha-icon icon="${this.getWeatherIcon(condition, 'above_horizon')}"></ha-icon>`;

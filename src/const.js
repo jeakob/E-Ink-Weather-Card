@@ -46,6 +46,35 @@ const weatherIconsNight = {
   'partlycloudy': 'partlycloudy-night',
 };
 
+// Icon name map for InkyPi icons (OpenWeatherMap code filenames, PNG format)
+// https://github.com/fatihak/InkyPi
+const weatherIconsInkyPiDay = {
+  'clear-night':    '01n',
+  'cloudy':         '04d',
+  'exceptional':    '11d',
+  'fog':            '48d',
+  'hail':           '13d',
+  'lightning':      '11d',
+  'lightning-rainy':'11d',
+  'partlycloudy':   '02d',
+  'pouring':        '10d',
+  'rainy':          '09d',
+  'snowy':          '13d',
+  'snowy-rainy':    '13d',
+  'sunny':          '01d',
+  'windy':          '04d',
+  'windy-variant':  '04d',
+};
+
+const weatherIconsInkyPiNight = {
+  ...weatherIconsInkyPiDay,
+  'sunny':       '01n',
+  'clear-night': '01n',
+  'partlycloudy':'02n',
+  'rainy':       '10n',
+  'pouring':     '10n',
+};
+
 const WeatherEntityFeature = {
   FORECAST_DAILY: 1,
   FORECAST_HOURLY: 2,
@@ -57,5 +86,7 @@ export {
   weatherIcons,
   weatherIconsDay,
   weatherIconsNight,
+  weatherIconsInkyPiDay,
+  weatherIconsInkyPiNight,
   WeatherEntityFeature
 };
