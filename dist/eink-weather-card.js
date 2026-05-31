@@ -1579,7 +1579,7 @@ class EinkWeatherCardEditor extends s {
             </select>
           </div>
           ${iconSet !== 'ha' ? x`
-            <div class="flex-container" style="margin-bottom: 12px;">
+            <div class="textfield-container" style="margin-bottom: 12px;">
               <ha-textfield
                 label="Icon size"
                 type="number"
@@ -1759,7 +1759,7 @@ class EinkWeatherCardEditor extends s {
                 <label>Show date</label>
               </div>
             </div>
-            <div class="flex-container" style="margin-bottom: 12px;">
+            <div class="textfield-container" style="margin-bottom: 12px;">
               <ha-textfield
                 label="Time text size"
                 type="number"
@@ -1791,85 +1791,73 @@ class EinkWeatherCardEditor extends s {
 
           <div class="section-header">Text Sizes</div>
           <div class="textfield-container">
-            <div class="flex-container">
-              <ha-textfield
-                label="Current temperature"
-                type="number"
-                .value="${this._config.current_temp_size || '28'}"
-                @change="${(e) => this._valueChanged(e, 'current_temp_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Condition text"
-                type="number"
-                .value="${this._config.condition_text_size || '18'}"
-                @change="${(e) => this._valueChanged(e, 'condition_text_size')}"
-              ></ha-textfield>
-            </div>
-            <div class="flex-container">
-              <ha-textfield
-                label="Feels like text"
-                type="number"
-                .value="${this._config.feels_like_text_size || '13'}"
-                @change="${(e) => this._valueChanged(e, 'feels_like_text_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Description text"
-                type="number"
-                .value="${this._config.description_text_size || '13'}"
-                @change="${(e) => this._valueChanged(e, 'description_text_size')}"
-              ></ha-textfield>
-            </div>
-            <div class="flex-container">
-              <ha-textfield
-                label="Attributes text"
-                type="number"
-                .value="${this._config.attributes_text_size || '14'}"
-                @change="${(e) => this._valueChanged(e, 'attributes_text_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Attributes icon"
-                type="number"
-                .value="${this._config.attributes_icon_size || '24'}"
-                @change="${(e) => this._valueChanged(e, 'attributes_icon_size')}"
-              ></ha-textfield>
-            </div>
-            <div class="flex-container">
-              <ha-textfield
-                label="Wind speed text"
-                type="number"
-                .value="${this._config.wind_speed_text_size || '11'}"
-                @change="${(e) => this._valueChanged(e, 'wind_speed_text_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Wind unit text"
-                type="number"
-                .value="${this._config.wind_unit_text_size || '9'}"
-                @change="${(e) => this._valueChanged(e, 'wind_unit_text_size')}"
-              ></ha-textfield>
-            </div>
-            <div class="flex-container">
-              <ha-textfield
-                label="Last updated text"
-                type="number"
-                .value="${this._config.last_updated_text_size || '13'}"
-                @change="${(e) => this._valueChanged(e, 'last_updated_text_size')}"
-              ></ha-textfield>
-            </div>
+            <ha-textfield
+              label="Current temperature"
+              type="number"
+              .value="${this._config.current_temp_size || '28'}"
+              @change="${(e) => this._valueChanged(e, 'current_temp_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Condition text"
+              type="number"
+              .value="${this._config.condition_text_size || '18'}"
+              @change="${(e) => this._valueChanged(e, 'condition_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Feels like text"
+              type="number"
+              .value="${this._config.feels_like_text_size || '13'}"
+              @change="${(e) => this._valueChanged(e, 'feels_like_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Description text"
+              type="number"
+              .value="${this._config.description_text_size || '13'}"
+              @change="${(e) => this._valueChanged(e, 'description_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Attributes text"
+              type="number"
+              .value="${this._config.attributes_text_size || '14'}"
+              @change="${(e) => this._valueChanged(e, 'attributes_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Attributes icon"
+              type="number"
+              .value="${this._config.attributes_icon_size || '24'}"
+              @change="${(e) => this._valueChanged(e, 'attributes_icon_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Wind speed text"
+              type="number"
+              .value="${this._config.wind_speed_text_size || '11'}"
+              @change="${(e) => this._valueChanged(e, 'wind_speed_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Wind unit text"
+              type="number"
+              .value="${this._config.wind_unit_text_size || '9'}"
+              @change="${(e) => this._valueChanged(e, 'wind_unit_text_size')}"
+            ></ha-textfield>
+            <ha-textfield
+              label="Last updated text"
+              type="number"
+              .value="${this._config.last_updated_text_size || '13'}"
+              @change="${(e) => this._valueChanged(e, 'last_updated_text_size')}"
+            ></ha-textfield>
             ${this._config.show_daily_summary ? x`
-              <div class="flex-container">
-                <ha-textfield
-                  label="Daily summary text"
-                  type="number"
-                  .value="${this._config.daily_summary_text_size || '14'}"
-                  @change="${(e) => this._valueChanged(e, 'daily_summary_text_size')}"
-                ></ha-textfield>
-                <ha-textfield
-                  label="Daily summary icon"
-                  type="number"
-                  .value="${this._config.daily_summary_icon_size || '30'}"
-                  @change="${(e) => this._valueChanged(e, 'daily_summary_icon_size')}"
-                ></ha-textfield>
-              </div>
+              <ha-textfield
+                label="Daily summary text"
+                type="number"
+                .value="${this._config.daily_summary_text_size || '14'}"
+                @change="${(e) => this._valueChanged(e, 'daily_summary_text_size')}"
+              ></ha-textfield>
+              <ha-textfield
+                label="Daily summary icon"
+                type="number"
+                .value="${this._config.daily_summary_icon_size || '30'}"
+                @change="${(e) => this._valueChanged(e, 'daily_summary_icon_size')}"
+              ></ha-textfield>
             ` : ''}
           </div>
 
@@ -2036,7 +2024,7 @@ class EinkWeatherCardEditor extends s {
           </div>
 
           <div class="section-header">Sizes &amp; Layout</div>
-          <div class="flex-container" style="margin-bottom: 12px;">
+          <div class="textfield-container">
             <ha-textfield
               label="Precipitation bar size %"
               type="number"
