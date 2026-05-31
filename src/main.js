@@ -1681,25 +1681,21 @@ renderForecastConditionIcons({ config, forecastItems, sun } = this) {
         const sunriseTime = new Date(sun.attributes.next_rising);
         const sunsetTime = new Date(sun.attributes.next_setting);
 
-        // Adjust sunrise and sunset times to match the date of forecastTime
-        const adjustedSunriseTime = new Date(forecastTime);
-        adjustedSunriseTime.setHours(sunriseTime.getHours());
-        adjustedSunriseTime.setMinutes(sunriseTime.getMinutes());
-        adjustedSunriseTime.setSeconds(sunriseTime.getSeconds());
-
-        const adjustedSunsetTime = new Date(forecastTime);
-        adjustedSunsetTime.setHours(sunsetTime.getHours());
-        adjustedSunsetTime.setMinutes(sunsetTime.getMinutes());
-        adjustedSunsetTime.setSeconds(sunsetTime.getSeconds());
-
         let isDayTime;
 
         if (config.forecast.type === 'daily') {
-          // For daily forecast, assume it's day time
           isDayTime = true;
         } else {
-          // For other forecast types, determine based on sunrise and sunset times
-          isDayTime = forecastTime >= adjustedSunriseTime && forecastTime <= adjustedSunsetTime;
+          // Project next_rising / next_setting to the forecast day using pure
+          // millisecond arithmetic so the result is timezone-independent.
+          // setHours()/getHours() is local-timezone-sensitive and breaks when
+          // the browser (e.g. Puppeteer) runs in a different timezone than HA.
+          const msPerDay = 24 * 60 * 60 * 1000;
+          const sunriseOffset = Math.round((forecastTime - sunriseTime) / msPerDay);
+          const sunsetOffset  = Math.round((forecastTime - sunsetTime)  / msPerDay);
+          const approxSunrise = new Date(sunriseTime.getTime() + sunriseOffset * msPerDay);
+          const approxSunset  = new Date(sunsetTime.getTime()  + sunsetOffset  * msPerDay);
+          isDayTime = forecastTime >= approxSunrise && forecastTime <= approxSunset;
         }
 
         const weatherIcons = isDayTime ? weatherIconsDay : weatherIconsNight;
