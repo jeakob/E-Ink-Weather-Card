@@ -248,7 +248,16 @@ set hass(hass) {
 
     this.feels_like = this.config.feels_like && hass.states[this.config.feels_like] ? hass.states[this.config.feels_like].state : this.weather.attributes.apparent_temperature;
     this.description = this.config.description && hass.states[this.config.description] ? hass.states[this.config.description].state : this.weather.attributes.description;
-    this.custom_text = this.config.custom_text_sensor && hass.states[this.config.custom_text_sensor] ? hass.states[this.config.custom_text_sensor].state : null;
+    if (this.config.custom_text_sensor && hass.states[this.config.custom_text_sensor]) {
+      const _cts = hass.states[this.config.custom_text_sensor];
+      if (this.config.custom_text_sensor_attribute) {
+        this.custom_text = _cts.state === 'on' ? (_cts.attributes[this.config.custom_text_sensor_attribute] || null) : null;
+      } else {
+        this.custom_text = _cts.state || null;
+      }
+    } else {
+      this.custom_text = null;
+    }
 
     let rawCloudCoverage;
     let rawCloudCoverageForecast = null;

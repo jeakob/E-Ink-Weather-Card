@@ -1467,6 +1467,12 @@ class EinkWeatherCardEditor extends s {
           flex-basis: calc(50% - 10px);
           flex-grow: 1;
         }
+        .sizes-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          margin-bottom: 12px;
+        }
         .select-wrapper {
           display: flex;
           flex-direction: column;
@@ -1781,7 +1787,7 @@ class EinkWeatherCardEditor extends s {
           </div>
 
           <div class="section-header">Text Sizes</div>
-          <div class="flex-container" style="margin-bottom: 12px;">
+          <div class="sizes-grid">
             <ha-textfield
               label="Current temperature"
               type="number"
@@ -1853,6 +1859,19 @@ class EinkWeatherCardEditor extends s {
           </div>
 
           <div class="section-header">Language &amp; Custom</div>
+          <div class="textfield-container" style="margin-bottom: 12px;">
+            <ha-textfield
+              label="Custom text sensor entity"
+              .value="${this._config.custom_text_sensor || ''}"
+              @change="${(e) => this._valueChanged(e, 'custom_text_sensor')}"
+            ></ha-textfield>
+            ${this._config.custom_text_sensor ? x`
+              <ha-textfield
+                label="Attribute to display (leave blank to use state — only shown when state is 'on')"
+                .value="${this._config.custom_text_sensor_attribute || ''}"
+                @change="${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}"
+              ></ha-textfield>
+            ` : ''}
           <div class="select-wrapper" style="margin-bottom: 12px;">
             <label>Language</label>
             <select
@@ -1887,14 +1906,6 @@ class EinkWeatherCardEditor extends s {
               ].map((o) => x`<option value=${o.value} ?selected=${(this._config.locale || '') === o.value}>${o.label}</option>`)}
             </select>
           </div>
-          <div class="textfield-container">
-            <ha-textfield
-              label="Custom text sensor entity (shown at top center)"
-              .value="${this._config.custom_text_sensor || ''}"
-              @change="${(e) => this._valueChanged(e, 'custom_text_sensor')}"
-            ></ha-textfield>
-          </div>
-
         </div>
 
         <!-- ===== FORECAST TAB ===== -->
@@ -18632,7 +18643,16 @@ set hass(hass) {
 
     this.feels_like = this.config.feels_like && hass.states[this.config.feels_like] ? hass.states[this.config.feels_like].state : this.weather.attributes.apparent_temperature;
     this.description = this.config.description && hass.states[this.config.description] ? hass.states[this.config.description].state : this.weather.attributes.description;
-    this.custom_text = this.config.custom_text_sensor && hass.states[this.config.custom_text_sensor] ? hass.states[this.config.custom_text_sensor].state : null;
+    if (this.config.custom_text_sensor && hass.states[this.config.custom_text_sensor]) {
+      const _cts = hass.states[this.config.custom_text_sensor];
+      if (this.config.custom_text_sensor_attribute) {
+        this.custom_text = _cts.state === 'on' ? (_cts.attributes[this.config.custom_text_sensor_attribute] || null) : null;
+      } else {
+        this.custom_text = _cts.state || null;
+      }
+    } else {
+      this.custom_text = null;
+    }
 
     let rawCloudCoverage;
     let rawCloudCoverageForecast = null;
