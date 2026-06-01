@@ -1255,9 +1255,7 @@ class EinkWeatherCardEditor extends s {
   }
 
   _EntityChanged(event, key) {
-    if (!this._config) {
-      return;
-    }
+    if (!this._config) return;
     const newConfig = { ...this._config };
     newConfig.entity = event.target.value;
     this._entity = event.target.value;
@@ -1265,49 +1263,36 @@ class EinkWeatherCardEditor extends s {
   }
 
   configChanged(newConfig) {
-    const event = new Event("config-changed", {
-      bubbles: true,
-      composed: true,
-    });
+    const event = new Event("config-changed", { bubbles: true, composed: true });
     event.detail = { config: newConfig };
     this.dispatchEvent(event);
   }
 
   _valueChanged(event, key) {
-    if (!this._config) {
-      return;
-    }
-
+    if (!this._config) return;
     const target = event.target;
     const tagName = target.tagName.toLowerCase();
     const isToggle = tagName === 'ha-switch' || tagName === 'ha-checkbox';
     const value = isToggle ? target.checked : target.value;
-
     let newConfig = { ...this._config };
-
     if (key.includes('.')) {
       const parts = key.split('.');
       let currentLevel = newConfig;
-
       for (let i = 0; i < parts.length - 1; i++) {
         const part = parts[i];
         currentLevel[part] = { ...currentLevel[part] };
         currentLevel = currentLevel[part];
       }
-
       currentLevel[parts[parts.length - 1]] = value;
     } else {
       newConfig[key] = value;
     }
-
     this.configChanged(newConfig);
     this.requestUpdate();
   }
 
   _handleStyleChange(event) {
-    if (!this._config) {
-      return;
-    }
+    if (!this._config) return;
     const newConfig = JSON.parse(JSON.stringify(this._config));
     newConfig.forecast.style = event.target.value;
     this.configChanged(newConfig);
@@ -1315,9 +1300,7 @@ class EinkWeatherCardEditor extends s {
   }
 
   _handleTypeChange(event) {
-    if (!this._config) {
-      return;
-    }
+    if (!this._config) return;
     const newConfig = JSON.parse(JSON.stringify(this._config));
     newConfig.forecast.type = event.target.value;
     this.configChanged(newConfig);
@@ -1325,9 +1308,7 @@ class EinkWeatherCardEditor extends s {
   }
 
   _handleIconStyleChange(event) {
-    if (!this._config) {
-      return;
-    }
+    if (!this._config) return;
     const newConfig = JSON.parse(JSON.stringify(this._config));
     newConfig.icon_style = event.target.value;
     this.configChanged(newConfig);
@@ -1389,61 +1370,18 @@ class EinkWeatherCardEditor extends s {
 
     return x`
       <style>
-        .switch-label {
-          padding-left: 14px;
-        }
-        .switch-container {
-          display: flex;
-          align-items: center;
-          margin-bottom: 12px;
-        }
-        .page-container {
-          display: none;
-        }
-        .page-container.active {
-          display: block;
-        }
-        .time-container {
-          display: flex;
-          flex-direction: row;
-          margin-bottom: 12px;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-        .switch-right {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        }
-        .checkbox-container {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-        }
-        .textfield-container {
-          display: flex;
-          flex-direction: column;
-          margin-bottom: 10px;
-          gap: 20px;
-        }
-        .radio-container {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-        }
-        .radio-group {
-          display: flex;
-          align-items: center;
-        }
-        .radio-group label {
-          margin-left: 4px;
-        }
-        div.buttons-container {
-          display: flex;
-          gap: 8px;
-          padding-bottom: 10px;
-          margin-bottom: 20px;
-        }
+        .switch-label { padding-left: 14px; }
+        .switch-container { display: flex; align-items: center; margin-bottom: 12px; }
+        .page-container { display: none; }
+        .page-container.active { display: block; }
+        .time-container { display: flex; flex-direction: row; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
+        .switch-right { display: flex; flex-direction: row; align-items: center; }
+        .checkbox-container { display: flex; align-items: center; gap: 5px; }
+        .field-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        .radio-container { display: flex; align-items: center; gap: 5px; }
+        .radio-group { display: flex; align-items: center; }
+        .radio-group label { margin-left: 4px; }
+        div.buttons-container { display: flex; gap: 8px; padding-bottom: 10px; margin-bottom: 20px; }
         div.buttons-container mwc-button {
           --mdc-theme-primary: var(--primary-text-color);
           --mdc-button-outline-color: var(--divider-color);
@@ -1456,37 +1394,9 @@ class EinkWeatherCardEditor extends s {
           background: var(--primary-color);
           --mdc-theme-primary: #fff;
         }
-        .flex-container {
-          display: flex;
-          flex-direction: row;
-          gap: 20px;
-          flex-wrap: wrap;
-        }
-        .flex-container ha-textfield {
-          flex-basis: calc(50% - 10px);
-          flex-grow: 1;
-        }
-        .sizes-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          margin-bottom: 12px;
-        }
-        .sizes-grid ha-textfield {
-          display: block;
-          width: 100%;
-        }
-        .select-wrapper {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          margin-bottom: 8px;
-        }
-        .select-wrapper label {
-          font-size: 12px;
-          color: var(--secondary-text-color, #757575);
-        }
-        select.native-select {
+        .select-wrapper { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+        .select-wrapper label { font-size: 12px; color: var(--secondary-text-color, #757575); }
+        select.native-select, input.native-input {
           padding: 8px 12px;
           border: 1px solid var(--divider-color, #e0e0e0);
           border-radius: 4px;
@@ -1497,9 +1407,9 @@ class EinkWeatherCardEditor extends s {
           width: 100%;
           min-height: 40px;
           box-sizing: border-box;
-          cursor: pointer;
         }
-        select.native-select:focus {
+        select.native-select { cursor: pointer; }
+        select.native-select:focus, input.native-input:focus {
           outline: none;
           border-color: var(--primary-color, #03a9f4);
         }
@@ -1513,29 +1423,25 @@ class EinkWeatherCardEditor extends s {
           padding-bottom: 6px;
           border-bottom: 1px solid var(--divider-color, #e0e0e0);
         }
-        .section-header:first-child {
-          margin-top: 4px;
-        }
+        .section-header:first-child { margin-top: 4px; }
       </style>
       <div>
 
         <!-- Entity and title -->
-        <div class="textfield-container">
+        <div class="field-group">
           <div class="select-wrapper">
             <label>Entity</label>
-            <select
-              class="native-select"
-              .value=${this._entity || ''}
-              @change=${(e) => this._EntityChanged(e, 'entity')}
-            >
+            <select class="native-select" .value=${this._entity || ''} @change=${(e) => this._EntityChanged(e, 'entity')}>
               ${this.entities.map((entity) => x`<option value=${entity} ?selected=${entity === this._entity}>${entity}</option>`)}
             </select>
           </div>
-          <ha-textfield
-            label="Title"
-            .value="${this._config.title || ''}"
-            @change="${(e) => this._valueChanged(e, 'title')}"
-          ></ha-textfield>
+          <div class="select-wrapper">
+            <label>Title</label>
+            <input class="native-input" type="text"
+              .value="${this._config.title || ''}"
+              @change="${(e) => this._valueChanged(e, 'title')}"
+            >
+          </div>
         </div>
 
         <!-- Tab buttons -->
@@ -1551,27 +1457,18 @@ class EinkWeatherCardEditor extends s {
 
           <div class="section-header">Display Mode</div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'eink_mode')}"
-              .checked="${this._config.eink_mode === true}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'eink_mode')}" .checked="${this._config.eink_mode === true}"></ha-switch>
             <label class="switch-label">E-Ink Display Mode (high contrast, bold text, no animations)</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'eink_color_mode')}"
-              .checked="${this._config.eink_color_mode === true}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'eink_color_mode')}" .checked="${this._config.eink_color_mode === true}"></ha-switch>
             <label class="switch-label">E-Ink Color Mode (7-color e-ink palette, bold, no animations)</label>
           </div>
 
           <div class="section-header">Icons</div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
             <label>Icon set</label>
-            <select
-              class="native-select"
-              @change=${(e) => this._handleIconSetChange(e)}
-            >
+            <select class="native-select" @change=${(e) => this._handleIconSetChange(e)}>
               <option value="ha" ?selected=${iconSet === 'ha'}>HA default icons</option>
               <option value="style1" ?selected=${iconSet === 'style1'}>Animated – Style 1</option>
               <option value="style2" ?selected=${iconSet === 'style2'}>Animated – Style 2</option>
@@ -1579,326 +1476,236 @@ class EinkWeatherCardEditor extends s {
             </select>
           </div>
           ${iconSet !== 'ha' ? x`
-            <div class="textfield-container" style="margin-bottom: 12px;">
-              <ha-textfield
-                label="Icon size"
-                type="number"
-                .value="${this._config.icons_size || '25'}"
-                @change="${(e) => this._valueChanged(e, 'icons_size')}"
-              ></ha-textfield>
+            <div class="field-group" style="margin-bottom: 12px;">
+              <div class="select-wrapper">
+                <label>Icon size</label>
+                <input class="native-input" type="number"
+                  .value="${this._config.icons_size || '25'}"
+                  @change="${(e) => this._valueChanged(e, 'icons_size')}"
+                >
+              </div>
               ${iconSet !== 'inkypi' ? x`
-                <ha-textfield
-                  label="Custom icon path (overrides icon set)"
-                  .value="${this._config.icons || ''}"
-                  @change="${(e) => this._valueChanged(e, 'icons')}"
-                ></ha-textfield>
+                <div class="select-wrapper">
+                  <label>Custom icon path (overrides icon set)</label>
+                  <input class="native-input" type="text"
+                    .value="${this._config.icons || ''}"
+                    @change="${(e) => this._valueChanged(e, 'icons')}"
+                  >
+                </div>
               ` : ''}
             </div>
           ` : ''}
 
           <div class="section-header">What to Show</div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_main')}"
-              .checked="${this._config.show_main !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_main')}" .checked="${this._config.show_main !== false}"></ha-switch>
             <label class="switch-label">Show main weather area</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_temperature')}"
-              .checked="${this._config.show_temperature !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_temperature')}" .checked="${this._config.show_temperature !== false}"></ha-switch>
             <label class="switch-label">Show current temperature</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_current_condition')}"
-              .checked="${this._config.show_current_condition !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_current_condition')}" .checked="${this._config.show_current_condition !== false}"></ha-switch>
             <label class="switch-label">Show current weather condition</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_attributes')}"
-              .checked="${this._config.show_attributes !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_attributes')}" .checked="${this._config.show_attributes !== false}"></ha-switch>
             <label class="switch-label">Show attributes</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_attribute_labels')}"
-              .checked="${this._config.show_attribute_labels === true}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_attribute_labels')}" .checked="${this._config.show_attribute_labels === true}"></ha-switch>
             <label class="switch-label">Show attribute labels (e.g. Humidity, Pressure, Wind)</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_humidity')}"
-              .checked="${this._config.show_humidity !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_humidity')}" .checked="${this._config.show_humidity !== false}"></ha-switch>
             <label class="switch-label">Show humidity</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_pressure')}"
-              .checked="${this._config.show_pressure !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_pressure')}" .checked="${this._config.show_pressure !== false}"></ha-switch>
             <label class="switch-label">Show pressure</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_wind_direction')}"
-              .checked="${this._config.show_wind_direction !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_wind_direction')}" .checked="${this._config.show_wind_direction !== false}"></ha-switch>
             <label class="switch-label">Show wind direction</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_wind_speed')}"
-              .checked="${this._config.show_wind_speed !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_wind_speed')}" .checked="${this._config.show_wind_speed !== false}"></ha-switch>
             <label class="switch-label">Show wind speed</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_sun')}"
-              .checked="${this._config.show_sun !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_sun')}" .checked="${this._config.show_sun !== false}"></ha-switch>
             <label class="switch-label">Show sunrise / sunset</label>
           </div>
           ${this.hasApparentTemperature ? x`
             <div class="switch-container">
-              <ha-switch
-                @change="${(e) => this._valueChanged(e, 'show_feels_like')}"
-                .checked="${this._config.show_feels_like !== false}"
-              ></ha-switch>
+              <ha-switch @change="${(e) => this._valueChanged(e, 'show_feels_like')}" .checked="${this._config.show_feels_like !== false}"></ha-switch>
               <label class="switch-label">Show feels-like temperature</label>
             </div>
           ` : ''}
           ${this.hasDewpoint ? x`
             <div class="switch-container">
-              <ha-switch
-                @change="${(e) => this._valueChanged(e, 'show_dew_point')}"
-                .checked="${this._config.show_dew_point !== false}"
-              ></ha-switch>
+              <ha-switch @change="${(e) => this._valueChanged(e, 'show_dew_point')}" .checked="${this._config.show_dew_point !== false}"></ha-switch>
               <label class="switch-label">Show dew point</label>
             </div>
           ` : ''}
           ${this.hasWindgustspeed ? x`
             <div class="switch-container">
-              <ha-switch
-                @change="${(e) => this._valueChanged(e, 'show_wind_gust_speed')}"
-                .checked="${this._config.show_wind_gust_speed !== false}"
-              ></ha-switch>
+              <ha-switch @change="${(e) => this._valueChanged(e, 'show_wind_gust_speed')}" .checked="${this._config.show_wind_gust_speed !== false}"></ha-switch>
               <label class="switch-label">Show wind gust speed</label>
             </div>
           ` : ''}
           ${this.hasVisibility ? x`
             <div class="switch-container">
-              <ha-switch
-                @change="${(e) => this._valueChanged(e, 'show_visibility')}"
-                .checked="${this._config.show_visibility !== false}"
-              ></ha-switch>
+              <ha-switch @change="${(e) => this._valueChanged(e, 'show_visibility')}" .checked="${this._config.show_visibility !== false}"></ha-switch>
               <label class="switch-label">Show visibility</label>
             </div>
           ` : ''}
           ${this.hasDescription ? x`
             <div class="switch-container">
-              <ha-switch
-                @change="${(e) => this._valueChanged(e, 'show_description')}"
-                .checked="${this._config.show_description !== false}"
-              ></ha-switch>
+              <ha-switch @change="${(e) => this._valueChanged(e, 'show_description')}" .checked="${this._config.show_description !== false}"></ha-switch>
               <label class="switch-label">Show weather description</label>
             </div>
           ` : ''}
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_last_changed')}"
-              .checked="${this._config.show_last_changed !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_last_changed')}" .checked="${this._config.show_last_changed !== false}"></ha-switch>
             <label class="switch-label">Show when last data changed</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_daily_summary')}"
-              .checked="${this._config.show_daily_summary === true}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_daily_summary')}" .checked="${this._config.show_daily_summary === true}"></ha-switch>
             <label class="switch-label">Show tomorrow &amp; in 2 days summary</label>
           </div>
 
           <div class="section-header">Clock</div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'show_time')}"
-              .checked="${this._config.show_time !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'show_time')}" .checked="${this._config.show_time !== false}"></ha-switch>
             <label class="switch-label">Show current time</label>
           </div>
           ${this._config.show_time ? x`
             <div class="time-container" style="margin-left: 14px; margin-bottom: 8px;">
               <div class="checkbox-container">
-                <ha-checkbox
-                  @change="${(e) => this._valueChanged(e, 'show_time_seconds')}"
-                  .checked="${this._config.show_time_seconds !== false}"
-                ></ha-checkbox>
+                <ha-checkbox @change="${(e) => this._valueChanged(e, 'show_time_seconds')}" .checked="${this._config.show_time_seconds !== false}"></ha-checkbox>
                 <label>Show seconds</label>
               </div>
               <div class="checkbox-container">
-                <ha-checkbox
-                  @change="${(e) => this._valueChanged(e, 'show_day')}"
-                  .checked="${this._config.show_day !== false}"
-                ></ha-checkbox>
+                <ha-checkbox @change="${(e) => this._valueChanged(e, 'show_day')}" .checked="${this._config.show_day !== false}"></ha-checkbox>
                 <label>Show day</label>
               </div>
               <div class="checkbox-container">
-                <ha-checkbox
-                  @change="${(e) => this._valueChanged(e, 'show_date')}"
-                  .checked="${this._config.show_date !== false}"
-                ></ha-checkbox>
+                <ha-checkbox @change="${(e) => this._valueChanged(e, 'show_date')}" .checked="${this._config.show_date !== false}"></ha-checkbox>
                 <label>Show date</label>
               </div>
             </div>
-            <div class="textfield-container" style="margin-bottom: 12px;">
-              <ha-textfield
-                label="Time text size"
-                type="number"
-                .value="${this._config.time_size || '26'}"
-                @change="${(e) => this._valueChanged(e, 'time_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Day and date text size"
-                type="number"
-                .value="${this._config.day_date_size || '15'}"
-                @change="${(e) => this._valueChanged(e, 'day_date_size')}"
-              ></ha-textfield>
+            <div class="field-group" style="margin-bottom: 12px;">
+              <div class="select-wrapper">
+                <label>Time text size</label>
+                <input class="native-input" type="number"
+                  .value="${this._config.time_size || '26'}"
+                  @change="${(e) => this._valueChanged(e, 'time_size')}"
+                >
+              </div>
+              <div class="select-wrapper">
+                <label>Day and date text size</label>
+                <input class="native-input" type="number"
+                  .value="${this._config.day_date_size || '15'}"
+                  @change="${(e) => this._valueChanged(e, 'day_date_size')}"
+                >
+              </div>
             </div>
           ` : ''}
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'use_12hour_format')}"
-              .checked="${this._config.use_12hour_format !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'use_12hour_format')}" .checked="${this._config.use_12hour_format !== false}"></ha-switch>
             <label class="switch-label">Use 12-hour format</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'autoscroll')}"
-              .checked="${this._config.autoscroll !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'autoscroll')}" .checked="${this._config.autoscroll !== false}"></ha-switch>
             <label class="switch-label">Autoscroll</label>
           </div>
 
           <div class="section-header">Text Sizes</div>
-          <div class="textfield-container">
-            <ha-textfield
-              label="Current temperature"
-              type="number"
-              .value="${this._config.current_temp_size || '28'}"
-              @change="${(e) => this._valueChanged(e, 'current_temp_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Condition text"
-              type="number"
-              .value="${this._config.condition_text_size || '18'}"
-              @change="${(e) => this._valueChanged(e, 'condition_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Feels like text"
-              type="number"
-              .value="${this._config.feels_like_text_size || '13'}"
-              @change="${(e) => this._valueChanged(e, 'feels_like_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Description text"
-              type="number"
-              .value="${this._config.description_text_size || '13'}"
-              @change="${(e) => this._valueChanged(e, 'description_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Attributes text"
-              type="number"
-              .value="${this._config.attributes_text_size || '14'}"
-              @change="${(e) => this._valueChanged(e, 'attributes_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Attributes icon"
-              type="number"
-              .value="${this._config.attributes_icon_size || '24'}"
-              @change="${(e) => this._valueChanged(e, 'attributes_icon_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Wind speed text"
-              type="number"
-              .value="${this._config.wind_speed_text_size || '11'}"
-              @change="${(e) => this._valueChanged(e, 'wind_speed_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Wind unit text"
-              type="number"
-              .value="${this._config.wind_unit_text_size || '9'}"
-              @change="${(e) => this._valueChanged(e, 'wind_unit_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Last updated text"
-              type="number"
-              .value="${this._config.last_updated_text_size || '13'}"
-              @change="${(e) => this._valueChanged(e, 'last_updated_text_size')}"
-            ></ha-textfield>
+          <div class="field-group">
+            <div class="select-wrapper">
+              <label>Current temperature</label>
+              <input class="native-input" type="number" .value="${this._config.current_temp_size || '28'}" @change="${(e) => this._valueChanged(e, 'current_temp_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Condition text</label>
+              <input class="native-input" type="number" .value="${this._config.condition_text_size || '18'}" @change="${(e) => this._valueChanged(e, 'condition_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Feels like text</label>
+              <input class="native-input" type="number" .value="${this._config.feels_like_text_size || '13'}" @change="${(e) => this._valueChanged(e, 'feels_like_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Description text</label>
+              <input class="native-input" type="number" .value="${this._config.description_text_size || '13'}" @change="${(e) => this._valueChanged(e, 'description_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Attributes text</label>
+              <input class="native-input" type="number" .value="${this._config.attributes_text_size || '14'}" @change="${(e) => this._valueChanged(e, 'attributes_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Attributes icon</label>
+              <input class="native-input" type="number" .value="${this._config.attributes_icon_size || '24'}" @change="${(e) => this._valueChanged(e, 'attributes_icon_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Wind speed text</label>
+              <input class="native-input" type="number" .value="${this._config.wind_speed_text_size || '11'}" @change="${(e) => this._valueChanged(e, 'wind_speed_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Wind unit text</label>
+              <input class="native-input" type="number" .value="${this._config.wind_unit_text_size || '9'}" @change="${(e) => this._valueChanged(e, 'wind_unit_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Last updated text</label>
+              <input class="native-input" type="number" .value="${this._config.last_updated_text_size || '13'}" @change="${(e) => this._valueChanged(e, 'last_updated_text_size')}">
+            </div>
             ${this._config.show_daily_summary ? x`
-              <ha-textfield
-                label="Daily summary text"
-                type="number"
-                .value="${this._config.daily_summary_text_size || '14'}"
-                @change="${(e) => this._valueChanged(e, 'daily_summary_text_size')}"
-              ></ha-textfield>
-              <ha-textfield
-                label="Daily summary icon"
-                type="number"
-                .value="${this._config.daily_summary_icon_size || '30'}"
-                @change="${(e) => this._valueChanged(e, 'daily_summary_icon_size')}"
-              ></ha-textfield>
+              <div class="select-wrapper">
+                <label>Daily summary text</label>
+                <input class="native-input" type="number" .value="${this._config.daily_summary_text_size || '14'}" @change="${(e) => this._valueChanged(e, 'daily_summary_text_size')}">
+              </div>
+              <div class="select-wrapper">
+                <label>Daily summary icon</label>
+                <input class="native-input" type="number" .value="${this._config.daily_summary_icon_size || '30'}" @change="${(e) => this._valueChanged(e, 'daily_summary_icon_size')}">
+              </div>
             ` : ''}
           </div>
 
           <div class="section-header">Language &amp; Custom</div>
-          <div class="textfield-container" style="margin-bottom: 12px;">
-            <ha-textfield
-              label="Custom text sensor entity"
-              .value="${this._config.custom_text_sensor || ''}"
-              @change="${(e) => this._valueChanged(e, 'custom_text_sensor')}"
-            ></ha-textfield>
+          <div class="field-group" style="margin-bottom: 12px;">
+            <div class="select-wrapper">
+              <label>Custom text sensor entity</label>
+              <input class="native-input" type="text"
+                .value="${this._config.custom_text_sensor || ''}"
+                @change="${(e) => this._valueChanged(e, 'custom_text_sensor')}"
+              >
+            </div>
             ${this._config.custom_text_sensor ? x`
               ${this.hass && this.hass.states[this._config.custom_text_sensor] && Object.keys(this.hass.states[this._config.custom_text_sensor].attributes).length ? x`
                 <div class="select-wrapper">
                   <label>Attribute to display (leave blank to use state value)</label>
-                  <select
-                    class="native-select"
-                    @change=${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}
-                  >
+                  <select class="native-select" @change=${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}>
                     <option value="" ?selected=${!this._config.custom_text_sensor_attribute}>— use state value —</option>
-                    ${Object.keys(this.hass.states[this._config.custom_text_sensor].attributes)
-                      .sort()
-                      .map((attr) => x`
-                        <option value=${attr} ?selected=${this._config.custom_text_sensor_attribute === attr}>${attr}</option>
-                      `)}
+                    ${Object.keys(this.hass.states[this._config.custom_text_sensor].attributes).sort().map((attr) => x`
+                      <option value=${attr} ?selected=${this._config.custom_text_sensor_attribute === attr}>${attr}</option>
+                    `)}
                   </select>
                 </div>
               ` : x`
-                <ha-textfield
-                  label="Attribute to display (entity not found in HA — type attribute name manually)"
-                  .value="${this._config.custom_text_sensor_attribute || ''}"
-                  @change="${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}"
-                ></ha-textfield>
+                <div class="select-wrapper">
+                  <label>Attribute to display (entity not found — type manually)</label>
+                  <input class="native-input" type="text"
+                    .value="${this._config.custom_text_sensor_attribute || ''}"
+                    @change="${(e) => this._valueChanged(e, 'custom_text_sensor_attribute')}"
+                  >
+                </div>
               `}
             ` : ''}
           </div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
             <label>Language</label>
-            <select
-              class="native-select"
-              @change=${(e) => this._valueChanged(e, 'locale')}
-            >
+            <select class="native-select" @change=${(e) => this._valueChanged(e, 'locale')}>
               ${[
                 { value: '', label: 'HA Default' },
                 { value: 'bg', label: 'Bulgarian' },
@@ -1936,172 +1743,106 @@ class EinkWeatherCardEditor extends s {
 
           <div class="section-header">Forecast Type</div>
           <div class="radio-group">
-            <ha-radio
-              name="type"
-              value="daily"
-              @change="${this._handleTypeChange}"
-              .checked="${forecastConfig.type === 'daily'}"
-            ></ha-radio>
+            <ha-radio name="type" value="daily" @change="${this._handleTypeChange}" .checked="${forecastConfig.type === 'daily'}"></ha-radio>
             <label>Daily forecast</label>
           </div>
           <div class="radio-group">
-            <ha-radio
-              name="type"
-              value="hourly"
-              @change="${this._handleTypeChange}"
-              .checked="${forecastConfig.type === 'hourly'}"
-            ></ha-radio>
+            <ha-radio name="type" value="hourly" @change="${this._handleTypeChange}" .checked="${forecastConfig.type === 'hourly'}"></ha-radio>
             <label>Hourly forecast</label>
           </div>
 
           <div class="section-header">Chart Style</div>
           <div class="radio-container">
             <div class="switch-right">
-              <ha-radio
-                name="style"
-                value="style1"
-                @change="${this._handleStyleChange}"
-                .checked="${forecastConfig.style === 'style1'}"
-              ></ha-radio>
+              <ha-radio name="style" value="style1" @change="${this._handleStyleChange}" .checked="${forecastConfig.style === 'style1'}"></ha-radio>
               <label>Chart style 1</label>
             </div>
             <div class="switch-right">
-              <ha-radio
-                name="style"
-                value="style2"
-                @change="${this._handleStyleChange}"
-                .checked="${forecastConfig.style === 'style2'}"
-              ></ha-radio>
+              <ha-radio name="style" value="style2" @change="${this._handleStyleChange}" .checked="${forecastConfig.style === 'style2'}"></ha-radio>
               <label>Chart style 2</label>
             </div>
           </div>
 
           <div class="section-header">Forecast Settings</div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'forecast.condition_icons')}"
-              .checked="${forecastConfig.condition_icons !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'forecast.condition_icons')}" .checked="${forecastConfig.condition_icons !== false}"></ha-switch>
             <label class="switch-label">Show condition icons</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'forecast.show_wind_forecast')}"
-              .checked="${forecastConfig.show_wind_forecast !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'forecast.show_wind_forecast')}" .checked="${forecastConfig.show_wind_forecast !== false}"></ha-switch>
             <label class="switch-label">Show wind forecast</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'forecast.round_temp')}"
-              .checked="${forecastConfig.round_temp !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'forecast.round_temp')}" .checked="${forecastConfig.round_temp !== false}"></ha-switch>
             <label class="switch-label">Round temperatures</label>
           </div>
           <div class="switch-container">
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'forecast.disable_animation')}"
-              .checked="${forecastConfig.disable_animation !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'forecast.disable_animation')}" .checked="${forecastConfig.disable_animation !== false}"></ha-switch>
             <label class="switch-label">Disable chart animation</label>
           </div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
-            <label>Precipitation type (probability if supported by weather entity)</label>
-            <select
-              class="native-select"
-              @change=${(e) => this._valueChanged(e, 'forecast.precipitation_type')}
-            >
+            <label>Precipitation type</label>
+            <select class="native-select" @change=${(e) => this._valueChanged(e, 'forecast.precipitation_type')}>
               <option value="rainfall" ?selected=${forecastConfig.precipitation_type === 'rainfall'}>Rainfall</option>
               <option value="probability" ?selected=${forecastConfig.precipitation_type === 'probability'}>Probability</option>
             </select>
           </div>
           <div class="switch-container" ?hidden=${forecastConfig.precipitation_type !== 'rainfall'}>
-            <ha-switch
-              @change="${(e) => this._valueChanged(e, 'forecast.show_probability')}"
-              .checked="${forecastConfig.show_probability !== false}"
-            ></ha-switch>
+            <ha-switch @change="${(e) => this._valueChanged(e, 'forecast.show_probability')}" .checked="${forecastConfig.show_probability !== false}"></ha-switch>
             <label class="switch-label">Show precipitation probability</label>
           </div>
 
           <div class="section-header">Sizes &amp; Layout</div>
-          <div class="textfield-container">
-            <ha-textfield
-              label="Precipitation bar size %"
-              type="number"
-              max="100"
-              min="0"
-              .value="${forecastConfig.precip_bar_size || '100'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.precip_bar_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Number of forecasts (0 = auto)"
-              type="number"
-              .value="${forecastConfig.number_of_forecasts || '0'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.number_of_forecasts')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Chart height"
-              type="number"
-              .value="${forecastConfig.chart_height || '180'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.chart_height')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Extra height when raining (px)"
-              type="number"
-              min="0"
-              .value="${forecastConfig.precip_expand_height || '0'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.precip_expand_height')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Labels font size"
-              type="number"
-              .value="${forecastConfig.labels_font_size || '11'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.labels_font_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Chart text size"
-              type="number"
-              .value="${forecastConfig.chart_text_size || '14'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.chart_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Chart ticks text size"
-              type="number"
-              .value="${forecastConfig.chart_ticks_text_size || '14'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.chart_ticks_text_size')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Chart line width"
-              type="number"
-              step="0.5"
-              .value="${forecastConfig.chart_line_width || '1.5'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.chart_line_width')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Chart point radius"
-              type="number"
-              step="0.5"
-              .value="${forecastConfig.chart_point_radius || '2'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.chart_point_radius')}"
-            ></ha-textfield>
-            <ha-textfield
-              label="Condition icon size"
-              type="number"
-              .value="${forecastConfig.condition_icon_size || '25'}"
-              @change="${(e) => this._valueChanged(e, 'forecast.condition_icon_size')}"
-            ></ha-textfield>
+          <div class="field-group">
+            <div class="select-wrapper">
+              <label>Precipitation bar size %</label>
+              <input class="native-input" type="number" min="0" max="100" .value="${forecastConfig.precip_bar_size || '100'}" @change="${(e) => this._valueChanged(e, 'forecast.precip_bar_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Number of forecasts (0 = auto)</label>
+              <input class="native-input" type="number" .value="${forecastConfig.number_of_forecasts || '0'}" @change="${(e) => this._valueChanged(e, 'forecast.number_of_forecasts')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Chart height</label>
+              <input class="native-input" type="number" .value="${forecastConfig.chart_height || '180'}" @change="${(e) => this._valueChanged(e, 'forecast.chart_height')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Extra height when raining (px)</label>
+              <input class="native-input" type="number" min="0" .value="${forecastConfig.precip_expand_height || '0'}" @change="${(e) => this._valueChanged(e, 'forecast.precip_expand_height')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Labels font size</label>
+              <input class="native-input" type="number" .value="${forecastConfig.labels_font_size || '11'}" @change="${(e) => this._valueChanged(e, 'forecast.labels_font_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Chart text size</label>
+              <input class="native-input" type="number" .value="${forecastConfig.chart_text_size || '14'}" @change="${(e) => this._valueChanged(e, 'forecast.chart_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Chart ticks text size</label>
+              <input class="native-input" type="number" .value="${forecastConfig.chart_ticks_text_size || '14'}" @change="${(e) => this._valueChanged(e, 'forecast.chart_ticks_text_size')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Chart line width</label>
+              <input class="native-input" type="number" step="0.5" .value="${forecastConfig.chart_line_width || '1.5'}" @change="${(e) => this._valueChanged(e, 'forecast.chart_line_width')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Chart point radius</label>
+              <input class="native-input" type="number" step="0.5" .value="${forecastConfig.chart_point_radius || '2'}" @change="${(e) => this._valueChanged(e, 'forecast.chart_point_radius')}">
+            </div>
+            <div class="select-wrapper">
+              <label>Condition icon size</label>
+              <input class="native-input" type="number" .value="${forecastConfig.condition_icon_size || '25'}" @change="${(e) => this._valueChanged(e, 'forecast.condition_icon_size')}">
+            </div>
           </div>
         </div>
 
         <!-- ===== UNITS TAB ===== -->
         <div class="page-container ${this.currentPage === 'units' ? 'active' : ''}">
-          <div class="textfield-container">
+          <div class="field-group">
             <div class="select-wrapper">
               <label>Convert pressure to</label>
-              <select
-                class="native-select"
-                @change=${(e) => this._valueChanged(e, 'units.pressure')}
-              >
+              <select class="native-select" @change=${(e) => this._valueChanged(e, 'units.pressure')}>
                 <option value="hPa" ?selected=${unitsConfig.pressure === 'hPa'}>hPa</option>
                 <option value="mmHg" ?selected=${unitsConfig.pressure === 'mmHg'}>mmHg</option>
                 <option value="inHg" ?selected=${unitsConfig.pressure === 'inHg'}>inHg</option>
@@ -2109,10 +1850,7 @@ class EinkWeatherCardEditor extends s {
             </div>
             <div class="select-wrapper">
               <label>Convert wind speed to</label>
-              <select
-                class="native-select"
-                @change=${(e) => this._valueChanged(e, 'units.speed')}
-              >
+              <select class="native-select" @change=${(e) => this._valueChanged(e, 'units.speed')}>
                 <option value="km/h" ?selected=${unitsConfig.speed === 'km/h'}>km/h</option>
                 <option value="m/s" ?selected=${unitsConfig.speed === 'm/s'}>m/s</option>
                 <option value="Bft" ?selected=${unitsConfig.speed === 'Bft'}>Bft</option>
