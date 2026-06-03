@@ -1701,6 +1701,20 @@ class EinkWeatherCardEditor extends s {
                   >
                 </div>
               `}
+              <div class="field-group" style="margin-top: 8px;">
+                <div class="select-wrapper">
+                  <label>Custom text size</label>
+                  <input class="native-input" type="number" .value="${this._config.custom_text_sensor_text_size || 14}" @change="${(e) => this._valueChanged(e, 'custom_text_sensor_text_size')}">
+                </div>
+                <div class="select-wrapper">
+                  <label>Custom text colour (e.g. #000000 or red — blank for default)</label>
+                  <input class="native-input" type="text" .value="${this._config.custom_text_sensor_color || ''}" @change="${(e) => this._valueChanged(e, 'custom_text_sensor_color')}">
+                </div>
+              </div>
+              <div class="switch-container" style="margin-top: 8px;">
+                <ha-switch @change="${(e) => this._valueChanged(e, 'custom_text_sensor_bold')}" .checked="${this._config.custom_text_sensor_bold !== false}"></ha-switch>
+                <label class="switch-label">Bold custom text</label>
+              </div>
             ` : ''}
           </div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
@@ -18273,6 +18287,9 @@ setConfig(config) {
     daily_summary_text_size: 14,
     daily_summary_icon_size: 30,
     custom_text_sensor: '',
+    custom_text_sensor_text_size: 14,
+    custom_text_sensor_bold: true,
+    custom_text_sensor_color: '',
     show_feels_like: false,
     show_dew_point: false,
     show_wind_gust_speed: false,
@@ -19571,8 +19588,15 @@ updateChart({ forecasts, forecastChart } = this) {
 
 renderCustomTextSensor({ config, custom_text } = this) {
   if (!config.custom_text_sensor || !custom_text) return x``;
+  const size = config.custom_text_sensor_text_size;
+  const bold = config.custom_text_sensor_bold !== false;
+  const color = config.custom_text_sensor_color;
+  let style = '';
+  if (size) style += `font-size: ${size}px;`;
+  style += `font-weight: ${bold ? 700 : 400};`;
+  if (color) style += `color: ${color} !important;`;
   return x`
-    <div class="custom-text-sensor">
+    <div class="custom-text-sensor" style="${style}">
       ${custom_text}
     </div>
   `;

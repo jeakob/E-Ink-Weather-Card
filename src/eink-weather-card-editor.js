@@ -541,6 +541,20 @@ class EinkWeatherCardEditor extends LitElement {
                   >
                 </div>
               `}
+              <div class="field-group" style="margin-top: 8px;">
+                <div class="select-wrapper">
+                  <label>Custom text size</label>
+                  <input class="native-input" type="number" .value="${this._config.custom_text_sensor_text_size || 14}" @change="${(e) => this._valueChanged(e, 'custom_text_sensor_text_size')}">
+                </div>
+                <div class="select-wrapper">
+                  <label>Custom text colour (e.g. #000000 or red — blank for default)</label>
+                  <input class="native-input" type="text" .value="${this._config.custom_text_sensor_color || ''}" @change="${(e) => this._valueChanged(e, 'custom_text_sensor_color')}">
+                </div>
+              </div>
+              <div class="switch-container" style="margin-top: 8px;">
+                <ha-switch @change="${(e) => this._valueChanged(e, 'custom_text_sensor_bold')}" .checked="${this._config.custom_text_sensor_bold !== false}"></ha-switch>
+                <label class="switch-label">Bold custom text</label>
+              </div>
             ` : ''}
           </div>
           <div class="select-wrapper" style="margin-bottom: 12px;">
