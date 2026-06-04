@@ -19879,16 +19879,22 @@ renderForecastConditionIcons({ config, forecastItems, sun } = this) {
         if (config.forecast.type === 'daily') {
           isDayTime = true;
         } else {
-          // Project next_rising / next_setting to the forecast day using pure
-          // millisecond arithmetic so the result is timezone-independent.
-          // setHours()/getHours() is local-timezone-sensitive and breaks when
-          // the browser (e.g. Puppeteer) runs in a different timezone than HA.
+          // Work out day vs night from the most recent sunrise/sunset at or
+          // before the forecast slot, using pure millisecond arithmetic so the
+          // result is timezone-independent. setHours()/getHours() is
+          // local-timezone-sensitive and breaks when the browser (e.g.
+          // Puppeteer) runs in a different timezone than HA.
+          //
+          // next_rising / next_setting recur roughly every 24h, so floor() the
+          // day offset to project each event back to its latest occurrence not
+          // after the slot. Whichever happened more recently decides day/night.
+          // (Bracketing the two events independently with round() misfires at
+          // the ~12h boundary, where round(0.5) shifts one event a full day and
+          // flips a daytime slot to night — showing the moon icon by day.)
           const msPerDay = 24 * 60 * 60 * 1000;
-          const sunriseOffset = Math.round((forecastTime - sunriseTime) / msPerDay);
-          const sunsetOffset  = Math.round((forecastTime - sunsetTime)  / msPerDay);
-          const approxSunrise = new Date(sunriseTime.getTime() + sunriseOffset * msPerDay);
-          const approxSunset  = new Date(sunsetTime.getTime()  + sunsetOffset  * msPerDay);
-          isDayTime = forecastTime >= approxSunrise && forecastTime <= approxSunset;
+          const lastSunrise = sunriseTime.getTime() + Math.floor((forecastTime - sunriseTime) / msPerDay) * msPerDay;
+          const lastSunset  = sunsetTime.getTime()  + Math.floor((forecastTime - sunsetTime)  / msPerDay) * msPerDay;
+          isDayTime = lastSunrise > lastSunset;
         }
 
         const iconMap = isDayTime ? this.iconMapDay : this.iconMapNight;
@@ -19906,7 +19912,7 @@ renderForecastConditionIcons({ config, forecastItems, sun } = this) {
             `${this.config.icons}${iconMap[condition]}${this.iconExtension}`;
           iconHtml = x`<img class="icon" src="${iconSrc}" alt="">`;
         } else {
-          iconHtml = x`<ha-icon icon="${this.getWeatherIcon(condition, sun.state)}"></ha-icon>`;
+          iconHtml = x`<ha-icon icon="${this.getWeatherIcon(condition, isDayTime ? 'above_horizon' : 'below_horizon')}"></ha-icon>`;
         }
 
         return x`
